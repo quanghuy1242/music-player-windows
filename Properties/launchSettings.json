@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MPA (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "MPA (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
