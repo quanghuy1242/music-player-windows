@@ -103,12 +103,20 @@
                                                     <VisualState x:Name="Normal">
                                                         <Storyboard>
                                                             <ColorAnimation Storyboard.TargetName="RootBorder" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" To="#00000000" Duration="0:0:0.10" />
+                                                            <DoubleAnimation Storyboard.TargetName="PlayButton" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.2" />
+                                                            <DoubleAnimation Storyboard.TargetName="MoreButton" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.2" />
+                                                            <ColorAnimation Storyboard.TargetName="PlayButton" Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" To="#40000000" Duration="0:0:0.2" />
+                                                            <ColorAnimation Storyboard.TargetName="MoreButton" Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" To="#40000000" Duration="0:0:0.2" />
                                                         </Storyboard>
                                                     </VisualState>
 
                                                     <VisualState x:Name="PointerOver">
                                                         <Storyboard>
                                                             <ColorAnimation Storyboard.TargetName="RootBorder" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" To="#3FFFFFFF" Duration="0:0:0.10" />
+                                                            <DoubleAnimation Storyboard.TargetName="PlayButton" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.2" />
+                                                            <DoubleAnimation Storyboard.TargetName="MoreButton" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.2" />
+                                                            <ColorAnimation Storyboard.TargetName="PlayButton" Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" To="#60000000" Duration="0:0:0.2" />
+                                                            <ColorAnimation Storyboard.TargetName="MoreButton" Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" To="#60000000" Duration="0:0:0.2" />
                                                         </Storyboard>
                                                     </VisualState>
                                                 </VisualStateGroup>
@@ -120,7 +128,51 @@
                                                     CornerRadius="8"
                                                     Padding="0"
                                                     Background="Transparent">
-                                                <ContentPresenter />
+                                                <Grid>
+                                                    <ContentPresenter />
+                                                    <!-- Play button - hidden by default, shown on hover -->
+                                                    <Button x:Name="PlayButton"
+                                                            Background="#40000000" 
+                                                            CornerRadius="18" 
+                                                            Width="36" 
+                                                            Height="36" 
+                                                            HorizontalAlignment="Left" 
+                                                            VerticalAlignment="Top" 
+                                                            Margin="14,140,0,0"
+                                                            Opacity="0"
+                                                            Padding="0"
+                                                            BorderBrush="Transparent"
+                                                            Click="PlayButton_Click">
+                                                        <Viewbox Stretch="Uniform" Width="15" Height="15">
+                                                            <SymbolIcon Symbol="Play" Foreground="White"/>
+                                                        </Viewbox>
+                                                    </Button>
+
+                                                    <!-- More button - hidden by default, shown on hover -->
+                                                    <Button x:Name="MoreButton"
+                                                            Background="#40000000" 
+                                                            CornerRadius="18" 
+                                                            Width="36" 
+                                                            Height="36" 
+                                                            HorizontalAlignment="Right" 
+                                                            VerticalAlignment="Top" 
+                                                            Margin="0,140,14,0"
+                                                            Opacity="0"
+                                                            Padding="0"
+                                                            BorderBrush="Transparent">
+                                                        <Viewbox Stretch="Uniform" Width="15" Height="15">
+                                                            <SymbolIcon Symbol="More" Foreground="White"/>
+                                                        </Viewbox>
+                                                        <Button.Flyout>
+                                                            <MenuFlyout>
+                                                                <MenuFlyoutItem Text="Play album" />
+                                                                <MenuFlyoutItem Text="Add to queue" />
+                                                                <MenuFlyoutItem Text="Add to playlist" />
+                                                                <MenuFlyoutItem Text="View artist" />
+                                                            </MenuFlyout>
+                                                        </Button.Flyout>
+                                                    </Button>
+                                                </Grid>
                                             </Border>
                                         </Grid>
                                     </ControlTemplate>
@@ -163,36 +215,6 @@
 
                                             <!-- subtle dark overlay -->
                                             <Border Background="#20000000" CornerRadius="8" />
-
-                                            <!-- Play button - hidden by default, shown on hover -->
-                                            <Border x:Name="PlayButton"
-                                                    Background="#CC000000" 
-                                                    CornerRadius="18" 
-                                                    Width="36" 
-                                                    Height="36" 
-                                                    HorizontalAlignment="Left" 
-                                                    VerticalAlignment="Bottom" 
-                                                    Margin="8"
-                                                    Opacity="0">
-                                                <Viewbox Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="9">
-                                                    <SymbolIcon Symbol="Play" Foreground="White"/>
-                                                </Viewbox>
-                                            </Border>
-
-                                            <!-- More button - hidden by default, shown on hover -->
-                                            <Border x:Name="MoreButton"
-                                                    Background="#CC000000" 
-                                                    CornerRadius="18" 
-                                                    Width="36" 
-                                                    Height="36" 
-                                                    HorizontalAlignment="Right" 
-                                                    VerticalAlignment="Bottom" 
-                                                    Margin="8"
-                                                    Opacity="0">
-                                                <Viewbox Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="9">
-                                                    <SymbolIcon Symbol="More" Foreground="White"/>
-                                                </Viewbox>
-                                            </Border>
                                         </Grid>
                                     </Border>
                                 </Grid>

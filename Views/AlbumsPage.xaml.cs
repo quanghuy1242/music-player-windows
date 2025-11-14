@@ -56,6 +56,15 @@ namespace MPA.Views
                 }
             }
         }
+
+        private void PlayButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.DataContext is Album album)
+            {
+                // TODO: Implement play album logic
+                // For now, just show a message or navigate
+            }
+        }
     }
 
     public class Album

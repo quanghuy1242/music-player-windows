@@ -11,7 +11,7 @@
         <StackPanel Margin="20">
             <TextBlock Text="Settings" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
             <ToggleSwitch Header="Enable notifications" IsOn="True"/>
-            <ToggleSwitch Header="Dark mode" IsOn="False"/>
+            <ToggleSwitch x:Name="DarkModeToggle" Header="Dark mode" IsOn="False" Toggled="DarkModeToggle_Toggled"/>
             <Button Content="Save Settings" Margin="0,20,0,0"/>
         </StackPanel>
     </ScrollViewer>
