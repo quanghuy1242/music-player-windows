@@ -27,32 +27,9 @@ namespace MPA
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void NavView_Loaded(object sender, RoutedEventArgs e)
-        {
-            ContentFrame.Navigate(typeof(HomePage));
-            NavView.SelectedItem = NavView.MenuItems[0];
-        }
-
-        private void NavView_SelectionChanged(object sender, NavigationViewSelectionChangedEventArgs args)
-        {
-            if (args.SelectedItem is NavigationViewItem item)
-            {
-                string tag = item.Tag.ToString();
-                switch (tag)
-                {
-                    case "HomePage":
-                        ContentFrame.Navigate(typeof(HomePage));
-                        break;
-                    case "AlbumPage":
-                        ContentFrame.Navigate(typeof(AlbumPage));
-                        break;
-                    case "SettingsPage":
-                        ContentFrame.Navigate(typeof(SettingsPage));
-                        break;
-                }
-            }
+            ExtendsContentIntoTitleBar = true;
+            SetTitleBar(AppTitleBar);
+            ContentFrame.Navigate(typeof(ShellPage));
         }
     }
 }

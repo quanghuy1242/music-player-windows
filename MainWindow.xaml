@@ -13,12 +13,18 @@ Title="MPA">
         <MicaBackdrop />
     </Window.SystemBackdrop>
 
-    <NavigationView x:Name="NavView" PaneDisplayMode="Left" IsBackButtonVisible="Collapsed" SelectionChanged="NavView_SelectionChanged" Loaded="NavView_Loaded">
-        <NavigationView.MenuItems>
-            <NavigationViewItem Icon="Home" Content="Home" Tag="HomePage"/>
-            <NavigationViewItem Icon="Pictures" Content="Albums" Tag="AlbumPage"/>
-            <NavigationViewItem Icon="Setting" Content="Settings" Tag="SettingsPage"/>
-        </NavigationView.MenuItems>
-        <Frame x:Name="ContentFrame"/>
-    </NavigationView>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Custom title bar -->
+        <TitleBar x:Name="AppTitleBar" 
+                  Grid.Row="0" 
+                  Title="MPA" 
+                  Background="{ThemeResource MicaAltBaseBrush}" />
+
+        <Frame x:Name="ContentFrame" Grid.Row="1" />
+    </Grid>
 </Window>

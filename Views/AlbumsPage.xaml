@@ -12,6 +12,28 @@
     </Page.Resources>
 
     <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="WindowStates">
+                <VisualState x:Name="WideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="800" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MoreButtonFilter.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="SortByPanel.Visibility" Value="Collapsed" />
+                        <Setter Target="GenrePanel.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -39,8 +61,30 @@
                         Orientation="Horizontal" 
                         Spacing="16"
                         HorizontalAlignment="Right">
+                <!-- More button -->
+                <Button x:Name="MoreButtonFilter" Padding="8">
+                    <FontIcon Glyph="&#xE712;" FontSize="14"/>
+                    <Button.Flyout>
+                        <MenuFlyout>
+                            <MenuFlyoutSubItem Text="Sort by">
+                                <MenuFlyoutItem Text="Date added" />
+                                <MenuFlyoutItem Text="Name" />
+                                <MenuFlyoutItem Text="Artist" />
+                                <MenuFlyoutItem Text="Year" />
+                            </MenuFlyoutSubItem>
+                            <MenuFlyoutSubItem Text="Genre">
+                                <MenuFlyoutItem Text="All genres" />
+                                <MenuFlyoutItem Text="Pop" />
+                                <MenuFlyoutItem Text="Rock" />
+                                <MenuFlyoutItem Text="Classical" />
+                                <MenuFlyoutItem Text="Jazz" />
+                                <MenuFlyoutItem Text="Electronic" />
+                            </MenuFlyoutSubItem>
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
                 <!-- Sort by dropdown -->
-                <StackPanel Orientation="Horizontal" Spacing="8">
+                <StackPanel x:Name="SortByPanel" Orientation="Horizontal" Spacing="8">
                     <TextBlock Text="Sort by:" 
                                Foreground="White" 
                                VerticalAlignment="Center"
@@ -57,7 +101,7 @@
                 </StackPanel>
 
                 <!-- Genre dropdown -->
-                <StackPanel Orientation="Horizontal" Spacing="8">
+                <StackPanel x:Name="GenrePanel" Orientation="Horizontal" Spacing="8">
                     <TextBlock Text="Genre:" 
                                Foreground="White" 
                                VerticalAlignment="Center"

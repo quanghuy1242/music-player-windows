@@ -19,6 +19,8 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Microsoft.UI.Windowing;
+using Windows.Graphics;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -51,6 +53,15 @@ namespace MPA
             _window = new Window();
             _window.SystemBackdrop = new MicaBackdrop();
 
+            // Set minimum window size
+            var appWindow = _window.AppWindow;
+            if (appWindow.Presenter is OverlappedPresenter presenter)
+            {
+                presenter.PreferredMinimumWidth = 900;
+                presenter.PreferredMinimumHeight = 600;
+            }
+            appWindow.Resize(new SizeInt32(900, 600));
+
             _shellPage = new ShellPage();
             _window.Content = _shellPage;
 
@@ -78,8 +89,8 @@ namespace MPA
             {
                 int left = Convert.ToInt32(leftObj);
                 int top = Convert.ToInt32(topObj);
-                int width = Convert.ToInt32(widthObj);
-                int height = Convert.ToInt32(heightObj);
+                int width = Math.Max(900, Convert.ToInt32(widthObj));
+                int height = Math.Max(900, Convert.ToInt32(heightObj));
 
                 _window.AppWindow.MoveAndResize(new Windows.Graphics.RectInt32(left, top, width, height));
             }
