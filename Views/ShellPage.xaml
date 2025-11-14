@@ -23,7 +23,7 @@
         </Grid.RowDefinitions>
 
         <!-- Simple custom title/header region so the app can extend into the title bar -->
-        <Grid x:Name="TitleBarDragRegion"
+        <!--<Grid x:Name="TitleBarDragRegion"
               Grid.Row="0"
               Height="52"
               Padding="20,0"
@@ -36,7 +36,6 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="12">
-                <!-- App icon -->
                 <FontIcon Glyph="&#xE189;" 
                           Foreground="#6FC1FF" 
                           FontSize="20" 
@@ -61,7 +60,7 @@
                     <FontIcon Glyph="&#xE13D;" FontSize="16" />
                 </Button>
             </StackPanel>
-        </Grid>
+        </Grid>-->
 
         <!-- Main Navigation body -->
         <NavigationView x:Name="RootNavigationView"
@@ -69,7 +68,7 @@
                         IsBackButtonVisible="Collapsed"
                         PaneDisplayMode="Left"
                         IsSettingsVisible="False"
-                        PaneTitle=""
+                        PaneTitle="Music Player"
                         SelectionChanged="OnNavigationSelectionChanged">
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Home" Tag="Home">
@@ -82,179 +81,196 @@
                         <FontIcon Glyph="&#xE1D3;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+            <NavigationView.AutoSuggestBox>
+                <AutoSuggestBox QueryIcon="Find" AutomationProperties.Name="Search" PlaceholderText="Search" />
+            </NavigationView.AutoSuggestBox>
+
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItemSeparator />
                 <NavigationViewItem Content="Settings" Tag="Settings">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE115;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-            </NavigationView.MenuItems>
+            </NavigationView.FooterMenuItems>
 
             <Frame x:Name="ContentFrame" />
         </NavigationView>
 
-        <!-- Playback area -->
-        <Grid Grid.Row="2" Background="#101114" Padding="32,12">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <!-- timeline row -->
-            <Grid Grid.Row="0" Grid.ColumnSpan="3" ColumnSpacing="12">
+        <!-- Playback area wrapped with a top border to separate it from main content -->
+        <Border Grid.Row="2" BorderThickness="0,1,0,0" BorderBrush="#323232" Background="Transparent">
+            <Grid Padding="32,12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="{x:Bind ViewModel.PositionLabel, Mode=OneWay}"
-                           VerticalAlignment="Center"
-                           Opacity="0.6" />
+                <!-- timeline row -->
+                <Grid Grid.Row="0" Grid.ColumnSpan="3" ColumnSpacing="12" Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-                <Slider Grid.Column="1"
-                        Minimum="0"
-                        Maximum="{x:Bind ViewModel.DurationSeconds, Mode=OneWay}"
-                        Value="{x:Bind ViewModel.PositionSeconds, Mode=TwoWay}"
-                        IsThumbToolTipEnabled="False"
-                        VerticalAlignment="Center" />
+                    <TextBlock Text="{x:Bind ViewModel.PositionLabel, Mode=OneWay}"
+                               VerticalAlignment="Center"
+                               Opacity="0.6" />
 
-                <TextBlock Grid.Column="2"
-                           Text="{x:Bind ViewModel.DurationLabel, Mode=OneWay}"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Right"
-                           Opacity="0.6" />
-            </Grid>
-
-            <!-- track metadata -->
-            <StackPanel Grid.Row="1"
-                        Grid.Column="0"
-                        Orientation="Horizontal"
-                        Spacing="16"
-                        VerticalAlignment="Center"
-                        Margin="0,8,24,0">
-                <Border Width="64"
-                        Height="64"
-                        CornerRadius="8"
-                        Background="#1A1A1A">
-                    <Image Source="{x:Bind ViewModel.AlbumArtUri, Mode=OneWay}"
-                           Stretch="UniformToFill"
-                           Width="64"
-                           Height="64" />
-                </Border>
-
-                <StackPanel VerticalAlignment="Center" Spacing="2">
-                    <TextBlock Text="{x:Bind ViewModel.TrackTitle, Mode=OneWay}"
-                               FontWeight="SemiBold"
-                               FontSize="16" />
-                    <TextBlock Text="{x:Bind ViewModel.TrackSubtitle, Mode=OneWay}"
-                               FontSize="13"
-                               Opacity="0.7" />
-                </StackPanel>
-
-                <ToggleButton Width="36"
-                              Height="36"
-                              Margin="12,0,0,0"
-                              Background="Transparent"
-                              BorderBrush="Transparent"
-                              Padding="0"
-                              IsChecked="{x:Bind ViewModel.IsLiked, Mode=TwoWay}">
-                    <FontIcon Glyph="&#xE006;" FontSize="16" />
-                </ToggleButton>
-            </StackPanel>
-
-            <!-- transport controls -->
-            <StackPanel Grid.Row="1"
-                        Grid.Column="1"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Spacing="12"
-                        Margin="0,8">
-                <ToggleButton Width="36"
-                              Height="36"
-                              Background="Transparent"
-                              BorderBrush="Transparent"
-                              Padding="0"
-                              IsChecked="{x:Bind ViewModel.IsShuffleEnabled, Mode=TwoWay}">
-                    <FontIcon Glyph="&#xE14B;" FontSize="16" />
-                </ToggleButton>
-
-                <Button Width="36"
-                        Height="36"
-                        Background="Transparent"
-                        BorderBrush="Transparent"
-                        Padding="0"
-                        Command="{x:Bind ViewModel.PreviousCommand}">
-                    <FontIcon Glyph="&#xE100;" FontSize="16" />
-                </Button>
-
-                <Button Width="64"
-                        Height="64"
-                        CornerRadius="32"
-                        Background="#1f6feb"
-                        Padding="0"
-                        Command="{x:Bind ViewModel.TogglePlayPauseCommand}">
-                    <FontIcon Glyph="{x:Bind ViewModel.PlayPauseGlyph, Mode=OneWay}" FontSize="24" />
-                </Button>
-
-                <Button Width="36"
-                        Height="36"
-                        Background="Transparent"
-                        BorderBrush="Transparent"
-                        Padding="0"
-                        Command="{x:Bind ViewModel.NextCommand}">
-                    <FontIcon Glyph="&#xE101;" FontSize="16" />
-                </Button>
-
-                <Button Width="36"
-                        Height="36"
-                        Background="Transparent"
-                        BorderBrush="Transparent"
-                        Padding="0"
-                        Command="{x:Bind ViewModel.CycleRepeatCommand}"
-                        Opacity="{x:Bind ViewModel.RepeatButtonOpacity, Mode=OneWay}">
-                    <FontIcon Glyph="{x:Bind ViewModel.RepeatGlyph, Mode=OneWay}" FontSize="16" />
-                </Button>
-            </StackPanel>
-
-            <!-- right aligned quick actions -->
-            <StackPanel Grid.Row="1"
-                        Grid.Column="2"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Spacing="14"
-                        Margin="24,8,0,0">
-                <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                    <FontIcon Glyph="&#xE15D;" FontSize="16" VerticalAlignment="Center" />
-                    <Slider Width="120"
+                    <Slider Grid.Column="1"
                             Minimum="0"
-                            Maximum="100"
-                            Value="{x:Bind ViewModel.Volume, Mode=TwoWay}"
+                            Maximum="{x:Bind ViewModel.DurationSeconds, Mode=OneWay}"
+                            Value="{x:Bind ViewModel.PositionSeconds, Mode=TwoWay}"
                             IsThumbToolTipEnabled="False"
                             VerticalAlignment="Center" />
+
+                    <TextBlock Grid.Column="2"
+                               Text="{x:Bind ViewModel.DurationLabel, Mode=OneWay}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right"
+                               Opacity="0.6" />
+                </Grid>
+
+                <!-- track metadata -->
+                <StackPanel Grid.Row="1"
+                            Grid.Column="0"
+                            Orientation="Horizontal"
+                            Spacing="16"
+                            VerticalAlignment="Center"
+                            Margin="0,8,24,0">
+                    <Border Width="64"
+                            Height="64"
+                            CornerRadius="8"
+                            Background="#1A1A1A">
+                        <Image Source="{x:Bind ViewModel.AlbumArtUri, Mode=OneWay}"
+                               Stretch="UniformToFill"
+                               Width="64"
+                               Height="64" />
+                    </Border>
+
+                    <StackPanel VerticalAlignment="Center" Spacing="2">
+                        <TextBlock Text="{x:Bind ViewModel.TrackTitle, Mode=OneWay}"
+                                   FontWeight="SemiBold"
+                                   FontSize="16" />
+                        <TextBlock Text="{x:Bind ViewModel.TrackSubtitle, Mode=OneWay}"
+                                   FontSize="13"
+                                   Opacity="0.7" />
+                    </StackPanel>
+
+                    <ToggleButton Width="36"
+                                  Height="36"
+                                  Margin="12,0,0,0"
+                                  Background="Transparent"
+                                  BorderBrush="Transparent"
+                                  Padding="0"
+                                  IsChecked="{x:Bind ViewModel.IsLiked, Mode=TwoWay}">
+                        <FontIcon Glyph="&#xE006;" FontSize="16" />
+                    </ToggleButton>
                 </StackPanel>
 
-                <Button Width="36"
-                        Height="36"
-                        Background="Transparent"
-                        BorderBrush="Transparent"
-                        Padding="0">
-                    <FontIcon Glyph="&#xE14C;" FontSize="16" />
-                </Button>
-                <Button Width="36"
-                        Height="36"
-                        Background="Transparent"
-                        BorderBrush="Transparent"
-                        Padding="0">
-                    <FontIcon Glyph="&#xE115;" FontSize="16" />
-                </Button>
-            </StackPanel>
-        </Grid>
+                <!-- transport controls -->
+                <StackPanel Grid.Row="1"
+                            Grid.Column="1"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Spacing="12"
+                            Margin="0,8">
+                    <ToggleButton Width="36"
+                                  Height="36"
+                                  Background="Transparent"
+                                  BorderBrush="Transparent"
+                                  Padding="0"
+                                  IsChecked="{x:Bind ViewModel.IsShuffleEnabled, Mode=TwoWay}">
+                        <FontIcon Glyph="&#xE14B;" FontSize="16" />
+                    </ToggleButton>
+
+                    <Button Width="36"
+                            Height="36"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Padding="0"
+                            Command="{x:Bind ViewModel.PreviousCommand}">
+                        <FontIcon Glyph="&#xE100;" FontSize="16" />
+                    </Button>
+
+                    <Button Width="64"
+                            Height="64"
+                            CornerRadius="32"
+                            Background="#1f6feb"
+                            Padding="0"
+                            Command="{x:Bind ViewModel.TogglePlayPauseCommand}">
+                        <FontIcon Glyph="{x:Bind ViewModel.PlayPauseGlyph, Mode=OneWay}" FontSize="24" />
+                    </Button>
+
+                    <Button Width="36"
+                            Height="36"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Padding="0"
+                            Command="{x:Bind ViewModel.NextCommand}">
+                        <FontIcon Glyph="&#xE101;" FontSize="16" />
+                    </Button>
+
+                    <Button Width="36"
+                            Height="36"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Padding="0"
+                            Command="{x:Bind ViewModel.CycleRepeatCommand}"
+                            Opacity="{x:Bind ViewModel.RepeatButtonOpacity, Mode=OneWay}">
+                        <FontIcon Glyph="{x:Bind ViewModel.RepeatGlyph, Mode=OneWay}" FontSize="16" />
+                    </Button>
+                </StackPanel>
+
+                <!-- right aligned quick actions -->
+                <StackPanel Grid.Row="1"
+                            Grid.Column="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Spacing="14"
+                            Margin="24,8,0,0">
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <FontIcon Glyph="&#xE15D;" FontSize="16" VerticalAlignment="Center" />
+                        <Slider Width="120"
+                                Minimum="0"
+                                Maximum="100"
+                                Value="{x:Bind ViewModel.Volume, Mode=TwoWay}"
+                                IsThumbToolTipEnabled="False"
+                                VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <Button Width="36"
+                            Height="36"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Padding="0">
+                        <FontIcon Glyph="&#xE14C;" FontSize="16" />
+                    </Button>
+                    <Button Width="36"
+                            Height="36"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Padding="0">
+                        <FontIcon Glyph="&#xE115;" FontSize="16" />
+                        <Button.Flyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="Playback Settings" />
+                                <MenuFlyoutItem Text="Audio Settings" />
+                                <MenuFlyoutItem Text="About" />
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </Page>

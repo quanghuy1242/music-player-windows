@@ -14,11 +14,12 @@ namespace MPA.Views
             InitializeComponent();
             DataContext = ViewModel;
             Loaded += OnLoaded;
+            //RootNavigationView.SettingsInvoked += OnSettingsInvoked;
         }
 
         public PlaybackViewModel ViewModel { get; }
 
-        public UIElement TitleBarHost => TitleBarDragRegion;
+        //public UIElement TitleBarHost => TitleBarDragRegion;
 
         public void NavigateTo(string targetTag)
         {
@@ -51,6 +52,11 @@ namespace MPA.Views
                 NavigateFrame(tag);
             }
         }
+
+        //private void OnSettingsInvoked(NavigationView sender, object args)
+        //{
+        //    NavigateFrame("Settings");
+        //}
 
         private void NavigateFrame(string tag)
         {

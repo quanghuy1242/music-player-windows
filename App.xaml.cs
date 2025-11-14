@@ -18,6 +18,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -55,9 +56,47 @@ namespace MPA
 
             // Customize title bar
             _window.ExtendsContentIntoTitleBar = true;
-            _window.SetTitleBar(_shellPage.TitleBarHost);
+            //_window.SetTitleBar(_shellPage.TitleBarHost);
+
+            // Restore window position and size
+            RestoreWindowPosition();
+
+            _window.Closed += OnWindowClosed;
 
             _window.Activate();
+        }
+
+        private void RestoreWindowPosition()
+        {
+            if (_window == null) return;
+
+            var localSettings = ApplicationData.Current.LocalSettings;
+            if (localSettings.Values.TryGetValue("WindowLeft", out var leftObj) &&
+                localSettings.Values.TryGetValue("WindowTop", out var topObj) &&
+                localSettings.Values.TryGetValue("WindowWidth", out var widthObj) &&
+                localSettings.Values.TryGetValue("WindowHeight", out var heightObj))
+            {
+                int left = Convert.ToInt32(leftObj);
+                int top = Convert.ToInt32(topObj);
+                int width = Convert.ToInt32(widthObj);
+                int height = Convert.ToInt32(heightObj);
+
+                _window.AppWindow.MoveAndResize(new Windows.Graphics.RectInt32(left, top, width, height));
+            }
+        }
+
+        private void OnWindowClosed(object sender, WindowEventArgs args)
+        {
+            if (_window == null) return;
+
+            var localSettings = ApplicationData.Current.LocalSettings;
+            var position = _window.AppWindow.Position;
+            var size = _window.AppWindow.Size;
+
+            localSettings.Values["WindowLeft"] = position.X;
+            localSettings.Values["WindowTop"] = position.Y;
+            localSettings.Values["WindowWidth"] = size.Width;
+            localSettings.Values["WindowHeight"] = size.Height;
         }
 
         public void NavigateToAlbums()
