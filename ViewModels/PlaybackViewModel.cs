@@ -42,7 +42,7 @@ namespace MPA.ViewModels
             _timer.Tick += (_, _) => AdvancePlayback();
 
             SetActiveTrack(0);
-            IsPlaying = true;
+            IsPlaying = false;
         }
 
         public RelayCommand TogglePlayPauseCommand { get; }
@@ -158,7 +158,7 @@ namespace MPA.ViewModels
             set => SetProperty(ref _volume, Math.Max(0, Math.Min(100, value)));
         }
 
-        public string PlayPauseGlyph => IsPlaying ? "\uE103" : "\uE102";
+        public string PlayPauseGlyph => IsPlaying ? "\uE103" : "\uF5B0";
 
         public string RepeatGlyph => RepeatMode == RepeatMode.One ? "\uE1CC" : "\uE1CD";
 

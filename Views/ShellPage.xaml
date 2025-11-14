@@ -10,20 +10,31 @@
     x:Name="ShellRoot"
     RequestedTheme="Dark">
 
-    <Page.Resources>
-        <Thickness x:Key="PagePadding">32,24,32,24</Thickness>
-    </Page.Resources>
+	<Page.Resources>
+		<Thickness x:Key="PagePadding">32,24,32,24</Thickness>
 
-    <!-- Make root transparent so the window Mica backdrop can show through -->
-    <Grid Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+		<!-- Use system/theme accent color so primary matches OS accent and updates with theme -->
+		<SolidColorBrush x:Key="PrimaryBrush" Color="{ThemeResource SystemAccentColor}" />
 
-        <!-- Simple custom title/header region so the app can extend into the title bar -->
-        <!--<Grid x:Name="TitleBarDragRegion"
+		<Style x:Key="PlayPauseButtonStyle" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}" />
+			<Setter Property="BorderThickness" Value="3" />
+			<Setter Property="CornerRadius" Value="25" />
+		</Style>
+
+	</Page.Resources>
+
+	<!-- Make root transparent so the window Mica backdrop can show through -->
+	<Grid Background="Transparent">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<!-- Simple custom title/header region so the app can extend into the title bar -->
+		<!--<Grid x:Name="TitleBarDragRegion"
               Grid.Row="0"
               Height="52"
               Padding="20,0"
@@ -62,215 +73,224 @@
             </StackPanel>
         </Grid>-->
 
-        <!-- Main Navigation body -->
-        <NavigationView x:Name="RootNavigationView"
+		<!-- Main Navigation body -->
+		<NavigationView x:Name="RootNavigationView"
                         Grid.Row="1"
                         IsBackButtonVisible="Collapsed"
                         PaneDisplayMode="Left"
                         IsSettingsVisible="False"
                         PaneTitle="Music Player"
                         SelectionChanged="OnNavigationSelectionChanged">
-            <NavigationView.MenuItems>
-                <NavigationViewItem Content="Home" Tag="Home">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE10F;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem Content="Music library" Tag="Albums">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE1D3;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-            </NavigationView.MenuItems>
+			<NavigationView.MenuItems>
+				<NavigationViewItem Content="Home" Tag="Home">
+					<NavigationViewItem.Icon>
+						<FontIcon Glyph="&#xE10F;" />
+					</NavigationViewItem.Icon>
+				</NavigationViewItem>
+				<NavigationViewItem Content="Music library" Tag="Albums">
+					<NavigationViewItem.Icon>
+						<FontIcon Glyph="&#xE1D3;" />
+					</NavigationViewItem.Icon>
+				</NavigationViewItem>
+			</NavigationView.MenuItems>
 
-            <NavigationView.AutoSuggestBox>
-                <AutoSuggestBox QueryIcon="Find" AutomationProperties.Name="Search" PlaceholderText="Search" />
-            </NavigationView.AutoSuggestBox>
+			<NavigationView.AutoSuggestBox>
+				<AutoSuggestBox QueryIcon="Find" AutomationProperties.Name="Search" PlaceholderText="Search" />
+			</NavigationView.AutoSuggestBox>
 
-            <NavigationView.FooterMenuItems>
-                <NavigationViewItemSeparator />
-                <NavigationViewItem Content="Settings" Tag="Settings">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE115;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-            </NavigationView.FooterMenuItems>
+			<NavigationView.FooterMenuItems>
+				<NavigationViewItemSeparator />
+				<NavigationViewItem Content="Settings" Tag="Settings">
+					<NavigationViewItem.Icon>
+						<FontIcon Glyph="&#xE115;" />
+					</NavigationViewItem.Icon>
+				</NavigationViewItem>
+			</NavigationView.FooterMenuItems>
 
-            <Frame x:Name="ContentFrame" />
-        </NavigationView>
+			<Frame x:Name="ContentFrame" />
+		</NavigationView>
 
-        <!-- Playback area wrapped with a top border to separate it from main content -->
-        <Border Grid.Row="2" BorderThickness="0,1,0,0" BorderBrush="#323232" Background="Transparent">
-            <Grid Padding="32,12">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+		<!-- Playback area wrapped with a top border to separate it from main content -->
+		<Border Grid.Row="2" BorderThickness="0,1,0,0" BorderBrush="#323232" Background="Transparent">
+			<Grid Padding="10">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
 
-                <!-- timeline row -->
-                <Grid Grid.Row="0" Grid.ColumnSpan="3" ColumnSpacing="12" Background="Transparent">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+				<!-- timeline row -->
+				<Grid Grid.Row="0" Grid.ColumnSpan="3" ColumnSpacing="12" Background="Transparent">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
 
-                    <TextBlock Text="{x:Bind ViewModel.PositionLabel, Mode=OneWay}"
+					<TextBlock Text="{x:Bind ViewModel.PositionLabel, Mode=OneWay}"
                                VerticalAlignment="Center"
                                Opacity="0.6" />
 
-                    <Slider Grid.Column="1"
+					<Slider Grid.Column="1"
                             Minimum="0"
                             Maximum="{x:Bind ViewModel.DurationSeconds, Mode=OneWay}"
                             Value="{x:Bind ViewModel.PositionSeconds, Mode=TwoWay}"
                             IsThumbToolTipEnabled="False"
                             VerticalAlignment="Center" />
 
-                    <TextBlock Grid.Column="2"
+					<TextBlock Grid.Column="2"
                                Text="{x:Bind ViewModel.DurationLabel, Mode=OneWay}"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Right"
                                Opacity="0.6" />
-                </Grid>
+				</Grid>
 
-                <!-- track metadata -->
-                <StackPanel Grid.Row="1"
+				<!-- track metadata -->
+				<StackPanel Grid.Row="1"
                             Grid.Column="0"
                             Orientation="Horizontal"
                             Spacing="16"
                             VerticalAlignment="Center"
                             Margin="0,8,24,0">
-                    <Border Width="64"
+					<Border Width="64"
                             Height="64"
                             CornerRadius="8"
                             Background="#1A1A1A">
-                        <Image Source="{x:Bind ViewModel.AlbumArtUri, Mode=OneWay}"
+						<Image Source="{x:Bind ViewModel.AlbumArtUri, Mode=OneWay}"
                                Stretch="UniformToFill"
                                Width="64"
                                Height="64" />
-                    </Border>
+					</Border>
 
-                    <StackPanel VerticalAlignment="Center" Spacing="2">
-                        <TextBlock Text="{x:Bind ViewModel.TrackTitle, Mode=OneWay}"
+					<StackPanel VerticalAlignment="Center" Spacing="2">
+						<TextBlock Text="{x:Bind ViewModel.TrackTitle, Mode=OneWay}"
                                    FontWeight="SemiBold"
                                    FontSize="16" />
-                        <TextBlock Text="{x:Bind ViewModel.TrackSubtitle, Mode=OneWay}"
+						<TextBlock Text="{x:Bind ViewModel.TrackSubtitle, Mode=OneWay}"
                                    FontSize="13"
                                    Opacity="0.7" />
-                    </StackPanel>
+					</StackPanel>
 
-                    <ToggleButton Width="36"
+					<ToggleButton Width="36"
                                   Height="36"
                                   Margin="12,0,0,0"
                                   Background="Transparent"
                                   BorderBrush="Transparent"
                                   Padding="0"
                                   IsChecked="{x:Bind ViewModel.IsLiked, Mode=TwoWay}">
-                        <FontIcon Glyph="&#xE006;" FontSize="16" />
-                    </ToggleButton>
-                </StackPanel>
+						<FontIcon Glyph="&#xE006;" FontSize="16" />
+					</ToggleButton>
+				</StackPanel>
 
-                <!-- transport controls -->
-                <StackPanel Grid.Row="1"
+				<!-- transport controls -->
+				<StackPanel Grid.Row="1"
                             Grid.Column="1"
                             Orientation="Horizontal"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Spacing="12"
                             Margin="0,8">
-                    <ToggleButton Width="36"
+					<ToggleButton Width="36"
                                   Height="36"
                                   Background="Transparent"
                                   BorderBrush="Transparent"
                                   Padding="0"
                                   IsChecked="{x:Bind ViewModel.IsShuffleEnabled, Mode=TwoWay}">
-                        <FontIcon Glyph="&#xE14B;" FontSize="16" />
-                    </ToggleButton>
+						<FontIcon Glyph="&#xE14B;" FontSize="16" />
+					</ToggleButton>
 
-                    <Button Width="36"
+					<Button Width="36"
                             Height="36"
                             Background="Transparent"
                             BorderBrush="Transparent"
                             Padding="0"
                             Command="{x:Bind ViewModel.PreviousCommand}">
-                        <FontIcon Glyph="&#xE100;" FontSize="16" />
-                    </Button>
+						<FontIcon Glyph="&#xE100;" FontSize="16" />
+					</Button>
 
-                    <Button Width="64"
-                            Height="64"
-                            CornerRadius="32"
-                            Background="#1f6feb"
+					<Grid>
+						<Grid.Resources>
+							<SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="{ThemeResource SystemAccentColor}" />
+							<SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="{ThemeResource SystemAccentColor}" />
+							<SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="#66999999" />
+							<SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="#19999999" />
+						</Grid.Resources>
+						<Button Width="50"
+                            Height="50"
+                            Style="{StaticResource PlayPauseButtonStyle}"
                             Padding="0"
                             Command="{x:Bind ViewModel.TogglePlayPauseCommand}">
-                        <FontIcon Glyph="{x:Bind ViewModel.PlayPauseGlyph, Mode=OneWay}" FontSize="24" />
-                    </Button>
+							<FontIcon Glyph="{x:Bind ViewModel.PlayPauseGlyph, Mode=OneWay}" FontSize="22" />
+						</Button>
+					</Grid>
 
-                    <Button Width="36"
+
+
+					<Button Width="36"
                             Height="36"
                             Background="Transparent"
                             BorderBrush="Transparent"
                             Padding="0"
                             Command="{x:Bind ViewModel.NextCommand}">
-                        <FontIcon Glyph="&#xE101;" FontSize="16" />
-                    </Button>
+						<FontIcon Glyph="&#xE101;" FontSize="16" />
+					</Button>
 
-                    <Button Width="36"
+					<Button Width="36"
                             Height="36"
                             Background="Transparent"
                             BorderBrush="Transparent"
                             Padding="0"
                             Command="{x:Bind ViewModel.CycleRepeatCommand}"
                             Opacity="{x:Bind ViewModel.RepeatButtonOpacity, Mode=OneWay}">
-                        <FontIcon Glyph="{x:Bind ViewModel.RepeatGlyph, Mode=OneWay}" FontSize="16" />
-                    </Button>
-                </StackPanel>
+						<FontIcon Glyph="{x:Bind ViewModel.RepeatGlyph, Mode=OneWay}" FontSize="16" />
+					</Button>
+				</StackPanel>
 
-                <!-- right aligned quick actions -->
-                <StackPanel Grid.Row="1"
+				<!-- right aligned quick actions -->
+				<StackPanel Grid.Row="1"
                             Grid.Column="2"
                             Orientation="Horizontal"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             Spacing="14"
                             Margin="24,8,0,0">
-                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                        <FontIcon Glyph="&#xE15D;" FontSize="16" VerticalAlignment="Center" />
-                        <Slider Width="120"
+					<StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+						<FontIcon Glyph="&#xE15D;" FontSize="16" VerticalAlignment="Center" />
+						<Slider Width="120"
                                 Minimum="0"
                                 Maximum="100"
                                 Value="{x:Bind ViewModel.Volume, Mode=TwoWay}"
                                 IsThumbToolTipEnabled="False"
                                 VerticalAlignment="Center" />
-                    </StackPanel>
+					</StackPanel>
 
-                    <Button Width="36"
+					<Button Width="36"
                             Height="36"
                             Background="Transparent"
                             BorderBrush="Transparent"
                             Padding="0">
-                        <FontIcon Glyph="&#xE14C;" FontSize="16" />
-                    </Button>
-                    <Button Width="36"
+						<FontIcon Glyph="&#xE14C;" FontSize="16" />
+					</Button>
+					<Button Width="36"
                             Height="36"
                             Background="Transparent"
                             BorderBrush="Transparent"
                             Padding="0">
-                        <FontIcon Glyph="&#xE115;" FontSize="16" />
-                        <Button.Flyout>
-                            <MenuFlyout>
-                                <MenuFlyoutItem Text="Playback Settings" />
-                                <MenuFlyoutItem Text="Audio Settings" />
-                                <MenuFlyoutItem Text="About" />
-                            </MenuFlyout>
-                        </Button.Flyout>
-                    </Button>
-                </StackPanel>
-            </Grid>
-        </Border>
-    </Grid>
+						<FontIcon Glyph="&#xE115;" FontSize="16" />
+						<Button.Flyout>
+							<MenuFlyout>
+								<MenuFlyoutItem Text="Playback Settings" />
+								<MenuFlyoutItem Text="Audio Settings" />
+								<MenuFlyoutItem Text="About" />
+							</MenuFlyout>
+						</Button.Flyout>
+					</Button>
+				</StackPanel>
+			</Grid>
+		</Border>
+	</Grid>
 </Page>
